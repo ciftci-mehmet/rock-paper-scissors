@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math/rand"
 	"os"
 )
 
@@ -13,17 +14,13 @@ func main() {
 
 	options := []string{"rock", "paper", "scissors"}
 
-	fmt.Printf("Sorry, but the computer chose %s\n", getWinningOption(userOption, options))
-
+	computerOption := getRandomOption(options)
+	fmt.Println(getResult(userOption, computerOption, options))
 }
 
 func takeInput() string {
 	scanner := bufio.NewScanner(os.Stdin)
-
-	// fmt.Println()
-	// fmt.Printf("Enter a request: ")
 	scanner.Scan()
-
 	return scanner.Text()
 }
 
@@ -36,12 +33,28 @@ func indexOf(needle string, haystack []string) int {
 	return -1
 }
 
-func getWinningOption(userOption string, options []string) string {
+func getRandomOption(options []string) string {
+	randomIndex := rand.Intn(len(options))
+	return options[randomIndex]
+}
+
+func getResult(userOption, computerOption string, options []string) string {
+	if userOption == computerOption {
+		return "There is a draw (" + computerOption + ")"
+	}
 	length := len(options)
 	half := length / 2
-	inputIndex := indexOf(userOption, options)
-	if half+inputIndex >= length {
-		return options[inputIndex+half-length]
+	userOptionIndex := indexOf(userOption, options)
+	computerOptionIndex := indexOf(computerOption, options)
+	if userOptionIndex+half < length {
+		if userOptionIndex+half >= computerOptionIndex && userOptionIndex < computerOptionIndex {
+			return "Sorry, but the computer chose " + computerOption
+		}
+		return "Well done. The computer chose " + computerOption + " and failed"
+	} else {
+		if (userOptionIndex+half)%length >= computerOptionIndex || userOptionIndex < computerOptionIndex {
+			return "Sorry, but the computer chose " + computerOption
+		}
+		return "Well done. The computer chose " + computerOption + " and failed"
 	}
-	return options[inputIndex+half]
 }
