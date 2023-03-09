@@ -8,14 +8,26 @@ import (
 )
 
 func main() {
-	input := takeInput()
+	for {
+		input := takeInput()
 
-	userOption := input
+		if input == "!exit" {
+			fmt.Println("Bye!")
+			return
+		}
 
-	options := []string{"rock", "paper", "scissors"}
+		options := []string{"rock", "paper", "scissors"}
 
-	computerOption := getRandomOption(options)
-	fmt.Println(getResult(userOption, computerOption, options))
+		userOption := input
+		if indexOf(userOption, options) == -1 {
+			fmt.Println("Invalid input")
+			continue
+		}
+
+		computerOption := getRandomOption(options)
+		fmt.Println(getResult(userOption, computerOption, options))
+
+	}
 }
 
 func takeInput() string {
