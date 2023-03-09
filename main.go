@@ -24,10 +24,19 @@ func main() {
 		return
 	}
 
-	fmt.Println("Enter your name:")
+	fmt.Printf("Enter your name: ")
 	name := takeInput()
 	fmt.Println("Hello,", name)
 	rating := scoreboard[name]
+
+	optionsInput := takeInput()
+	var options []string
+	if optionsInput == "" {
+		options = []string{"rock", "paper", "scissors"}
+	} else {
+		options = strings.Split(optionsInput, ",")
+	}
+	fmt.Println("Okay, let's start")
 
 	for {
 		input := takeInput()
@@ -41,8 +50,6 @@ func main() {
 			fmt.Println("Your rating:", rating)
 			continue
 		}
-
-		options := []string{"rock", "paper", "scissors"}
 
 		userOption := input
 		if indexOf(userOption, options) == -1 {
